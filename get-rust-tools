@@ -1,0 +1,102 @@
+#!/bin/sh -eu
+
+PROGNAME=$(basename $0)
+BASEDIR=$(cd $(dirname $0); pwd)
+
+IMAGE=masnagam/rust-tools
+PLATFORM=
+DISTRO=debian
+
+if [ "$(uname)" != Linux ] || id -nG | grep -q docker
+then
+  DOCKER='docker'
+else
+  DOCKER='sudo docker'
+fi
+
+help() {
+  cat <<EOF >&2
+Get pre-built tools for Rust
+
+Usage:
+  get-rust-tools [--platform <platform>] [<distro>]
+  get-rust-tools -h | --help
+
+Options:
+  --platform <platform>  [default: <host-platform>]
+    Select one of the following platforms:
+      - linux/386
+      - linux/amd64
+      - linux/arm/v7
+      - linux/arm64/v8
+
+Arguments:
+  <distro>  [default: $DISTRO]
+    Select one of the following distributions:
+      - debian
+
+Description:
+  This script extracts pre-built tools from $IMAGE and outputs themto STDOUT.
+
+  The tools are extracted as a gzipped TAR archive.  Therefore, it has to be
+  expanded by an archiver program like tar for extraction.
+
+  The downloaded Docker image will be removed automatically.
+
+Examples:
+  Install the latest version of docker-compose into \$CARGO_HOME/bin:
+
+    get-rust-tools | sudo tar -xz -C \$CARGO_HOME/bin --no-same-owner
+
+  Copy the archive file to a remote machine via SSH:
+
+    get-rust-tools --platform linux/arm64/v8 | ssh \$REMOTE 'cat >rust-tools.tgz'
+EOF
+    exit 0
+}
+
+error() {
+  echo "$1" >&2
+  exit 1
+}
+
+clean() {
+  sleep 1
+  $DOCKER image rm -f $IMAGE:$DISTRO >/dev/null
+}
+
+while [ $# -gt 0 ]
+do
+  case "$1" in
+    '-h' | '--help')
+      help
+      ;;
+    '--platform')
+      PLATFORM="$2"
+      shift 2
+      ;;
+    *)
+      DISTRO="$1"
+      break
+      ;;
+  esac
+done
+
+case $DISTRO in
+  debian)
+    ;;
+  *)
+    error "ERROR: DISTRO not supported: $DISTRO"
+    exit 1
+    ;;
+esac
+
+trap "clean" EXIT
+
+RUN_OPTS='--rm'
+if [ -n "$PLATFORM" ]; then
+  RUN_OPTS="$RUN_OPTS --platform $PLATFORM"
+fi
+
+$DOCKER run $RUN_OPTS $IMAGE:$DISTRO list-tools >&2
+$DOCKER run $RUN_OPTS $IMAGE:$DISTRO export-tools
