@@ -5,7 +5,7 @@ BASEDIR=$(cd $(dirname $0); pwd)
 
 IMAGE=masnagam/rust-tools
 PLATFORM=
-DISTRO=debian
+DISTRO=debian-buster
 
 if [ "$(uname)" != Linux ] || id -nG | grep -q docker
 then
@@ -33,7 +33,7 @@ Options:
 Arguments:
   <distro>  [default: $DISTRO]
     Select one of the following distributions:
-      - debian
+      - debian-buster
 
 Description:
   This script extracts pre-built tools from $IMAGE and outputs themto STDOUT.
@@ -83,7 +83,7 @@ do
 done
 
 case $DISTRO in
-  debian)
+  debian-*)
     ;;
   *)
     error "ERROR: DISTRO not supported: $DISTRO"

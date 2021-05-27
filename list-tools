@@ -1,9 +1,0 @@
-#!/bin/sh
-
-cargo audit --version
-cargo cache --version
-cargo expand --version
-cargo license --version
-cargo install-update --version
-grcov --version
-rust-analyzer --version

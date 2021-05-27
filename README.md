@@ -3,7 +3,7 @@
 > Multi-Arch Docker images containing pre-built tools for Rust
 
 [![build](https://github.com/masnagam/docker-rust-tools/actions/workflows/build.yml/badge.svg)](https://github.com/masnagam/docker-rust-tools/actions/workflows/build.yml)
-[![debian-size](https://img.shields.io/docker/image-size/masnagam/rust-tools/debian?label=Debian)](https://hub.docker.com/r/masnagam/rust-tools/tags?page=1&name=debian)
+[![debian/buster](https://img.shields.io/docker/image-size/masnagam/rust-tools/debian-buster?label=Debian/Buster)](https://hub.docker.com/r/masnagam/rust-tools/tags?page=1&name=debian-buster)
 
 ## Usage
 
