@@ -1,7 +1,7 @@
 set -eu
 
 TOOL=cargo-audit
-VERSION_PREFIX=v
+VERSION_PREFIX=cargo-audit/v
 
 BASEDIR=$(cd $(dirname $0); pwd)
 DISTRO=$1
