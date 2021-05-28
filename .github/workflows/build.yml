@@ -51,5 +51,5 @@ jobs:
           for platform in ${{ join(matrix.platforms, ' ') }}
           do
             echo "Testing for $platform..."
-            ./get-rust-tools --platform=$platform ${{ env.IMAGE }}:${{ matrix.distro }}-${{ matrix.version }} | tar -tvz
+            ./get-rust-tools --platform $platform ${{ matrix.distro }}-${{ matrix.version }} | tar -tvz
           done

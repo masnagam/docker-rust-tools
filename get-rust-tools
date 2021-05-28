@@ -28,7 +28,7 @@ Options:
       - linux/386
       - linux/amd64
       - linux/arm/v7
-      - linux/arm64/v8
+      - linux/arm64
 
 Arguments:
   <distro>  [default: $DISTRO]
@@ -50,7 +50,7 @@ Examples:
 
   Copy the archive file to a remote machine via SSH:
 
-    get-rust-tools --platform linux/arm64/v8 | ssh \$REMOTE 'cat >rust-tools.tgz'
+    get-rust-tools --platform linux/arm64 | ssh \$REMOTE 'cat >rust-tools.tgz'
 EOF
     exit 0
 }
