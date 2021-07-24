@@ -22,7 +22,10 @@ apt-get install -y --no-install-recommends \
 VERSION="$(get_crate_latest_version $TOOL)"
 echo "Installing $TOOL $VERSION..."
 
-GIT_URL="$(get_crate_repository_url $TOOL)"
+# package.metadata of cargo-audit is NOT a git URL, just a link to a GitHub page...
+#GIT_URL="$(get_crate_repository_url $TOOL)"
+GIT_URL='https://github.com/rustsec/rustsec'
+
 echo "fetching src from $GIT_URL..."
 fetch_src $GIT_URL "${VERSION_PREFIX}${VERSION}" $SRCDIR
 
