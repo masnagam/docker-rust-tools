@@ -24,20 +24,12 @@ echo "Installing $TOOL $VERSION..."
 
 # package.metadata of cargo-audit is NOT a git URL, just a link to a GitHub page...
 #GIT_URL="$(get_crate_repository_url $TOOL)"
-GIT_URL='https://github.com/rustsec/rustsec'
+GIT_URL='https://github.com/rustsec/rustsec.git'
 
 echo "fetching src from $GIT_URL..."
 fetch_src $GIT_URL "${VERSION_PREFIX}${VERSION}" $SRCDIR
 
 echo "Building $TOOL..."
-# Simply remove the rust-toolchain file.
-#
-# The rust-toolchain file enforces to use a toolchain to build BUILDPLATFORM's binary
-# even though the --target=$RUST_TARGET_TRIPLE is specified.
-#
-# Probably, we need to override the toolchain as described in:
-# https://rust-lang.github.io/rustup/overrides.html.
-rm $SRCDIR/rust-toolchain
 (cd $SRCDIR; \
  cargo build --release --target=$RUST_TARGET_TRIPLE --bin=cargo-audit --features=fix)
 
