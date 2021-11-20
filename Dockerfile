@@ -55,7 +55,7 @@ COPY ./build-scripts/helper.sh /build-scripts/
 COPY ./build-scripts/rust-analyzer.sh /build-scripts/
 RUN sh /build-scripts/rust-analyzer.sh debian $BUILDPLATFORM $TARGETPLATFORM /out
 
-FROM scratch
+FROM busybox
 LABEL maintainer="masnagam <masnagam@gmail.com>"
 COPY --from=cargo-audit-build /out/* /usr/local/cargo/bin/
 COPY --from=cargo-cache-build /out/* /usr/local/cargo/bin/
