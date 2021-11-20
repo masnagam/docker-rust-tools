@@ -1,15 +1,2 @@
 #!/bin/sh
-
-TOOLS="$(cat <<EOF | tr '\n' ' '
-cargo-audit
-cargo-cache
-cargo-expand
-cargo-license
-cargo-install-update
-cargo-install-update-config
-grcov
-rust-analyzer
-EOF
-)"
-
-(cd $CARGO_HOME/bin; tar -czf - $TOOLS)
+(cd $CARGO_HOME/bin; tar -czf - *)

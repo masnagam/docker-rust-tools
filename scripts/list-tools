@@ -1,5 +1,4 @@
 #!/bin/sh
-
 cargo audit --version
 cargo cache --version
 cargo expand --version
