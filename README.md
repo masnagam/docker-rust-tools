@@ -1,9 +1,9 @@
 # docker-rust-tools
 
-> Multi-Arch Docker images containing pre-built tools for Rust
+> Multi-Arch Docker images containing pre-built Rust tools for GNU/Linux platforms
 
 [![build](https://github.com/masnagam/docker-rust-tools/actions/workflows/build.yml/badge.svg)](https://github.com/masnagam/docker-rust-tools/actions/workflows/build.yml)
-[![debian/bullseye](https://img.shields.io/docker/image-size/masnagam/rust-tools/debian-bullseye?label=Debian/Bullseye)](https://hub.docker.com/r/masnagam/rust-tools/tags?page=1&name=debian-bullseye)
+[![latest](https://img.shields.io/docker/image-size/masnagam/rust-tools/latest?label=latest)](https://hub.docker.com/r/masnagam/rust-tools)
 
 ## Usage
 

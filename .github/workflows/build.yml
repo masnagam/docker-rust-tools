@@ -9,6 +9,7 @@ on:
 
 env:
   IMAGE: masnagam/rust-tools
+  PLATFORMS: linux/386,linux/amd64,linux/arm/v7,linux/arm64
   CARGO_BUILD_JOBS: 1
 
 jobs:
@@ -34,7 +35,7 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          platforms: ${{ join(matrix.platforms) }}
+          platforms: ${{ env.PLATFORMS }}
           tags: ${{ env.IMAGE }}:latest
           push: true
       - name: Test
@@ -43,7 +44,7 @@ jobs:
           echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json
           sudo service docker restart
 
-          for platform in ${{ join(matrix.platforms, ' ') }}
+          for platform in $(echo '${{ env.PLATFORMS }}' | tr ',' ' ')
           do
             echo "Testing for $platform..."
             ./get-rust-tools --platform $platform | tar -tvz
