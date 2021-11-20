@@ -3,9 +3,8 @@
 PROGNAME=$(basename $0)
 BASEDIR=$(cd $(dirname $0); pwd)
 
-IMAGE=masnagam/rust-tools
+IMAGE=masnagam/rust-tools:latest
 PLATFORM=
-DISTRO=debian-bullseye
 
 if [ "$(uname)" != Linux ] || id -nG | grep -q docker
 then
@@ -16,24 +15,19 @@ fi
 
 help() {
   cat <<EOF >&2
-Get pre-built tools for Rust
+Get pre-built Rust tools for GNU/Linux platforms
 
 Usage:
-  get-rust-tools [--platform <platform>] [<distro>]
+  get-rust-tools [--platform <platform>]
   get-rust-tools -h | --help
 
 Options:
   --platform <platform>  [default: <host-platform>]
     Select one of the following platforms:
-      - linux/386
-      - linux/amd64
-      - linux/arm/v7
-      - linux/arm64
-
-Arguments:
-  <distro>  [default: $DISTRO]
-    Select one of the following distributions:
-      - debian-bullseye
+      - linux/386 (i686-unknown-linux-gnu)
+      - linux/amd64 (x86_64-unknown-linux-gnu)
+      - linux/arm/v7 (armv7-unknown-linux-gnueabihf)
+      - linux/arm64 (aarch64-unknown-linux-gnu)
 
 Description:
   This script extracts pre-built tools from $IMAGE and outputs themto STDOUT.
@@ -62,7 +56,7 @@ error() {
 
 clean() {
   sleep 1
-  $DOCKER image rm -f $IMAGE:$DISTRO >/dev/null
+  $DOCKER image rm -f $IMAGE >/dev/null
 }
 
 while [ $# -gt 0 ]
@@ -76,20 +70,10 @@ do
       shift 2
       ;;
     *)
-      DISTRO="$1"
       break
       ;;
   esac
 done
-
-case $DISTRO in
-  debian-*)
-    ;;
-  *)
-    error "ERROR: DISTRO not supported: $DISTRO"
-    exit 1
-    ;;
-esac
 
 trap "clean" EXIT
 
@@ -98,5 +82,5 @@ if [ -n "$PLATFORM" ]; then
   RUN_OPTS="$RUN_OPTS --platform $PLATFORM"
 fi
 
-$DOCKER run $RUN_OPTS $IMAGE:$DISTRO list-tools >&2
-$DOCKER run $RUN_OPTS $IMAGE:$DISTRO export-tools
+$DOCKER run $RUN_OPTS $IMAGE list-tools >&2
+$DOCKER run $RUN_OPTS $IMAGE export-tools

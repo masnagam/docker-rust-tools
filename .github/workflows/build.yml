@@ -15,16 +15,11 @@ jobs:
   build:
     strategy:
       matrix:
-        distro:
-          - debian
-        include:
-          - distro: debian
-            version: bullseye
-            platforms:
-              - linux/386
-              - linux/amd64
-              - linux/arm/v7
-              - linux/arm64
+        platforms:
+          - linux/386
+          - linux/amd64
+          - linux/arm/v7
+          - linux/arm64
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -40,7 +35,7 @@ jobs:
           context: .
           file: Dockerfile
           platforms: ${{ join(matrix.platforms) }}
-          tags: ${{ env.IMAGE }}:${{ matrix.distro }}-${{ matrix.version }}
+          tags: ${{ env.IMAGE }}:latest
           push: true
       - name: Test
         run: |
@@ -51,5 +46,5 @@ jobs:
           for platform in ${{ join(matrix.platforms, ' ') }}
           do
             echo "Testing for $platform..."
-            ./get-rust-tools --platform $platform ${{ matrix.distro }}-${{ matrix.version }} | tar -tvz
+            ./get-rust-tools --platform $platform | tar -tvz
           done
